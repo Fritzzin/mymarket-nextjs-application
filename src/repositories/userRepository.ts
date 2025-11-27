@@ -1,13 +1,10 @@
-import IUserRepository from "@/lib/interfaces/IUserRepository";
 import { User } from "@/types/user";
 
 const BASE_URL = "http://localhost:5109/api/users";
 
-export default class UserRepository implements IUserRepository {
-    insertOne(): void {
-        throw new Error("Method not implemented.");
-    }
-    async listAll(): Promise<User[]> {
+export default class UserRepository {
+
+    async list(): Promise<User[]> {
         try {
             const response = await fetch(BASE_URL);
 
@@ -16,12 +13,11 @@ export default class UserRepository implements IUserRepository {
             }
 
             const dataInJson = await response.json();
-            return dataInJson.data as User[];
+            return dataInJson.data;
 
         } catch (error) {
-            console.log(error)
+            console.error(error)
             throw (error)
-            // return [];
         }
     }
 }

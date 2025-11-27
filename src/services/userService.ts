@@ -1,12 +1,18 @@
 import UserRepository from "@/repositories/userRepository";
+import { User } from "@/types/user";
 export default class UserService {
-    // validacoes de dados
-    // manipulacoes de dados
-    // ;
-    private userRepository = new UserRepository();;
+    // validacoes 
+    // manipulacoes
+    private userRepository = new UserRepository();
 
-    list() {
-        this.userRepository.listAll();
+    async list(): Promise<User[]> {
+        const users: User[] = await this.userRepository.list();
+
+        if (!users || users.length === 0) {
+            return [];
+        }
+
+        return users;
     }
 }
 

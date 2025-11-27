@@ -4,7 +4,7 @@ const BASE_URL = "http://localhost:5109/api/products";
 
 export default class ProductRepository {
 
-    async listAll(): Promise<Product[]> {
+    async list(): Promise<Product[]> {
         try {
             const response = await fetch(BASE_URL);
 
@@ -13,7 +13,7 @@ export default class ProductRepository {
             }
 
             const dataInJson = await response.json();
-            return dataInJson.data as Product[];
+            return dataInJson.data;
 
         } catch (error) {
             console.error(error)

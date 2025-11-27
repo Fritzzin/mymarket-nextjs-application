@@ -42,9 +42,7 @@ export const columns: ColumnDef<User>[] = [
         accessorKey: "createdOn",
         header: "Created On",
         cell: ({ row }) => {
-            console.log("ROW: ", row.getValue("createdOn"))
             const date = new Date(row.getValue("createdOn"));
-            console.log("Date: ", date)
             const formatted = Formatter.formatDate(date)
             return <div className="">{formatted}</div>
         }
