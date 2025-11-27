@@ -1,18 +1,31 @@
 import ProductRepository from "@/repositories/productRepository";
 import { Product } from "@/types/product";
-
 export default class ProductService {
 
-    service = new ProductRepository();
+    private repository = new ProductRepository();
 
     async list(): Promise<Product[]> {
-        const users: Product[] = await this.service.list();
+        const products: Product[] = await this.repository.list();
 
-        if (!users || users.length === 0) {
+        if (!products || products.length === 0) {
             return [];
         }
 
-        return users;
+        // console.log(products);
+
+        return products;
     }
 
+
+    async listWithEnvolope(): Promise<Product[]> {
+        const res = await this.repository.listTest();
+
+        if (!res.success) {
+            return [];
+            // Validacoes
+        }
+
+        const products = res.data.data;
+        return products;
+    }
 }

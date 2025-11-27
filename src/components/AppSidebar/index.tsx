@@ -3,6 +3,7 @@ import { Home, List, LogIn, ShoppingCart, User } from "lucide-react"
 import {
     Sidebar,
     SidebarContent,
+    SidebarFooter,
     SidebarGroup,
     SidebarGroupContent,
     SidebarGroupLabel,
@@ -13,6 +14,7 @@ import {
 } from "@/components/ui/sidebar"
 import Link from "next/link"
 import { Separator } from "@/components/ui/separator"
+import { ThemeModeToggle } from "../ThemeModeToggle"
 
 const items = [
     {
@@ -51,6 +53,7 @@ export default function AppSidebar() {
                                 <ShoppingCart />
                                 <span className="text-base font-semibold">My Market</span>
                             </Link>
+
                         </SidebarMenuButton>
                     </SidebarMenuItem>
                 </SidebarMenu>
@@ -77,6 +80,11 @@ export default function AppSidebar() {
                     </SidebarGroupContent>
                 </SidebarGroup>
             </SidebarContent>
+            <SidebarFooter>
+                <div className="flex flex-row-reverse">
+                    <ThemeModeToggle />
+                </div>
+            </SidebarFooter>
         </Sidebar>
     )
 }

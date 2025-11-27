@@ -14,11 +14,16 @@ import {
   FieldLabel,
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
+import LoginService, { sendLoginInformation } from "@/services/loginService"
+import UserRepository from "@/repositories/userRepository"
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+  const loginService = new LoginService();
+
+
   return (
     <div className={cn("flex items-center justify-center grow flex-col gap-6 p-10 w-[50%]", className)} {...props}>
       <Card className="w-[400px]">
@@ -29,13 +34,14 @@ export function LoginForm({
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form>
+          <form action={sendLoginInformation}>
             <FieldGroup>
               <Field>
                 <FieldLabel htmlFor="email">Email</FieldLabel>
                 <Input
                   id="email"
                   type="email"
+                  name="email"
                   placeholder="m@example.com"
                   required
                 />
@@ -50,7 +56,7 @@ export function LoginForm({
                     Forgot your password?
                   </a>
                 </div>
-                <Input id="password" type="password" required />
+                <Input id="password" type="password" name="password" required />
               </Field>
               <Field>
                 <Button type="submit">Login</Button>
