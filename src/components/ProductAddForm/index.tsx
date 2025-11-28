@@ -10,7 +10,7 @@ import { ProductCategory, ProductCategoryValues } from "@/enums/productCategory"
 import { Textarea } from "../ui/textarea"
 import { Select, SelectContent, SelectItem, SelectSeparator } from "../ui/select"
 import { SelectTrigger, SelectValue } from "@radix-ui/react-select"
-import { types } from "node:util"
+
 
 // Schema do form utilizando Zod
 const formSchema = z.object({
@@ -23,59 +23,20 @@ const formSchema = z.object({
         .min(1, "Description is required")
         .max(255, "Description must be lower than 255 characters long."),
     ProductCategory: z.enum(ProductCategory, 'Pick a valid option'),
-    // ProductCategory: z
-    //     .number()
-    //     .min(0)
-    //     .max(9),
-    price: z
-        .number()
-        .min(0.01),
-    // sku: z
-    //     .string()
-    //     .min(0)
-    //     .max(6),
-    // stock: z
-    //     .number()
-    //     .min(1)
+    // price: z
+    // .number()
+    // .min(0.01),
 })
 
-
-
-// const productCategory = Object.fromEntries(Object.entries(ProductCategory));
-
 export default function ProductAddForm() {
-    const productCategory = [
-        {
-            id: 0,
-            name: 'Eletronics'
-        },
-        {
-            id: 1,
-            name: 'Clothing'
-        }
-    ]
-
-    //     'Electronics',
-    //     'Clothing',
-    //     'Food',
-    //     'Beauty',
-    //     'Furniture',
-    //     'Sports',
-    //     'Books',
-    //     'Toys',
-    //     'Automotive',
-    //     'Other',
-
-
-    // useForm do react-hook-form, cria uma instancia do form utilizando como resolver
-    // o zod
+    // useForm do react-hook-form, cria uma instancia do form utilizando como resolver o zod
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
             name: "",
             description: "",
             ProductCategory: 0,
-            price: 0,
+            // price: 0,
             // sku: "",
             // stock: 0
         },
@@ -176,15 +137,6 @@ export default function ProductAddForm() {
                                 <SelectContent position="item-aligned">
                                     <SelectItem value="none">Select</SelectItem>
                                     <SelectSeparator />
-
-                                    {
-                                        // productCategory.map((category) => {
-                                        //     return <SelectItem value={category.id.toString()} key={category.id}>
-                                        //         {category.name}
-                                        //     </SelectItem>
-                                        // })
-                                    }
-
                                     {
                                         ProductCategoryValues.map((value) => {
                                             return <SelectItem value={value.toString()} key={value} >
