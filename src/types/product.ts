@@ -1,4 +1,4 @@
-import { ProductCategory } from "../enums/productCategory"
+import { ProductCategory } from "@/enums/productCategory"
 
 export type Product = {
     id: string,

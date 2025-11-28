@@ -13,7 +13,7 @@ export async function sendLoginInformation(formData: FormData) {
     const email = formData.get('email')?.toString();
     const password = formData.get('password')?.toString();
 
-    const loginRequest:Login = {
+    const loginRequest: Login = {
         email: email,
         password: password
     }
@@ -21,5 +21,7 @@ export async function sendLoginInformation(formData: FormData) {
     console.log("EMAIL:", email)
     console.log("PASS:", password)
 
-    return repository.verifyLogin(loginRequest);
+    const res = await repository.verifyLogin(loginRequest);
+    console.log(res);
+    // return repository.verifyLogin(loginRequest);
 }

@@ -14,7 +14,7 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import { DataTableProps } from "@/lib/interfaces/IDataTableProps"
+import { DataTableProps } from "@/interfaces/IDataTableProps"
 
 export function DataTable<TData, TValue>({
     columns,

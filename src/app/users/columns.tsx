@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { Gender } from "@/lib/enums/gender";
+import { Gender } from "@/enums/gender";
 import { Formatter } from "@/lib/formatter";
 import { User } from "@/types/user"
 import { ColumnDef } from "@tanstack/react-table"

@@ -1,6 +1,6 @@
 "use client"
 
-import { ProductCategory } from "@/lib/enums/productCategory";
+import { ProductCategory } from "@/enums/productCategory";
 import { Formatter } from "@/lib/formatter";
 import { Product } from "@/types/product"
 import { ColumnDef } from "@tanstack/react-table"

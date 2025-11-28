@@ -15,13 +15,12 @@ import {
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import LoginService, { sendLoginInformation } from "@/services/loginService"
-import UserRepository from "@/repositories/userRepository"
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
-  const loginService = new LoginService();
+  // const loginService = new LoginService();
 
 
   return (
