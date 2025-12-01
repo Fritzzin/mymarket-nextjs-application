@@ -43,9 +43,10 @@ export default class ProductService {
 
         const res = await this.repository.addNewProduct(product);
 
-        console.log(res);
+        console.log('response', res);
 
-        if (!res.success) {
+        if (!res.success || res.data.status === 400 || res.data.errors) {
+            console.log('ERROR')
             return false;
         }
 

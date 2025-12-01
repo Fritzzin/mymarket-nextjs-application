@@ -1,7 +1,7 @@
 "use client"
 // Hooks funcionam apenas em client side
 
-import { Controller, ControllerFieldState, ControllerRenderProps, FieldValues, useForm, UseFormStateReturn } from "react-hook-form"
+import { Controller, useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
 import { Field, FieldContent, FieldDescription, FieldError, FieldGroup, FieldLabel } from "../ui/field"
@@ -11,13 +11,13 @@ import { Textarea } from "../ui/textarea"
 import { Select, SelectContent, SelectItem, SelectSeparator } from "../ui/select"
 import { SelectTrigger, SelectValue } from "@radix-ui/react-select"
 import ProductService from "@/services/productService"
+import { toast } from "sonner"
 
-const categories = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
 // Schema do form utilizando Zod
 const formSchema = z.object({
     name: z
         .string()
-        .min(1, "Name is required.")
+        .min(3, "Must be between 3 and 50 characters long")
         .max(50),
 
     description: z
@@ -32,8 +32,6 @@ const formSchema = z.object({
             }
             return value
         }, z.enum(ProductCategory)),
-    // .enum(categories),
-
     sku: z
         .string()
         .nonempty("SKU should not be empty"),
@@ -56,10 +54,7 @@ const formSchema = z.object({
         return val;
     }, z
         .number("Must be a number")
-        .min(1, "Must be higher than 0")
-        .refine(val => Number.isFinite(val) && /^\d+\.\d{2}$/.test(val.toFixed(2)),
-            "Must have 2 decimal places"
-        )
+        .gt(0, "Must be higher than 0") // GT=Great Than (Maior Que)
     )
 })
 
@@ -75,30 +70,29 @@ export default function ProductAddForm() {
             ProductCategory: "none",
             sku: "",
             price: 0,
-            stock: 0 
-            // name: "",
-            // description: "",
-            // ProductCategory: "none",
-            // sku: "",
-            // price: 0,
-            // stock: 0
+            stock: 0
         },
     })
 
     // Acao a ser realizada quando o evento submit disparar
     const service = new ProductService();
     async function onSubmit(data: z.infer<typeof formSchema>) {
-        // console.log(data);
-        const response = await service.addProduct(data);
+        console.log(data);
+        // const response = await service.addProduct(data);
+        const promise = service.addProduct(data)
 
-        if (response) {
-            alert("sucesso!")
-            form.reset();
-        }
-    }
-
-    function resetForm() {
-        form.reset();
+        toast.promise(promise, {
+            loading: "Sending product's information...",
+            success: (response) => {
+                if (response) {
+                    form.reset()
+                    return `${data.name} has been created!`
+                } else {
+                    throw Error;
+                }
+            },
+            error: `Error while creating ${data.name}.`
+        })
     }
 
     return (
@@ -108,6 +102,7 @@ export default function ProductAddForm() {
             className="w-[50%]"
             onSubmit={form.handleSubmit(onSubmit)}
         >
+
             <FieldGroup>
                 {/* Controller do react-hook-form */}
                 {/* Name */}
@@ -122,12 +117,14 @@ export default function ProductAddForm() {
                         <Field data-invalid={fieldState.invalid} >
                             <FieldLabel htmlFor="product-name">
                                 Name
+                                <span className="text-destructive">*</span>
                             </FieldLabel>
                             <Input
                                 {...field}
                                 id="product-name"
                                 aria-invalid={fieldState.invalid}
                                 placeholder="Product's Name"
+                                required
                             />
 
                             {/* Caso for invalido, renderizara o FieldError com o array de erros */}
@@ -146,12 +143,14 @@ export default function ProductAddForm() {
                         <Field data-invalid={fieldState.invalid}>
                             <FieldLabel htmlFor="product-description">
                                 Description
+                                <span className="text-destructive">*</span>
                             </FieldLabel>
                             <Textarea
                                 {...field}
                                 id="product-description"
                                 aria-invalid={fieldState.invalid}
                                 placeholder="Product's Description"
+                                required
                             />
                             {fieldState.invalid && (
                                 <FieldError errors={[fieldState.error]} />
@@ -169,6 +168,7 @@ export default function ProductAddForm() {
                             <FieldContent>
                                 <FieldLabel htmlFor="product-category">
                                     Category:
+                                    <span className="text-destructive">*</span>
                                 </FieldLabel>
                                 <FieldDescription>
                                     Pick the product&apos;s category
@@ -176,30 +176,34 @@ export default function ProductAddForm() {
                                 {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
                             </FieldContent>
 
-                            <Select
-                                name={field.name}
-                                value={field.value || "none"}
-                                onValueChange={field.onChange}
-                            >
-                                <SelectTrigger
-                                    id="product-category"
-                                    aria-invalid={fieldState.invalid}
-                                    className="min-w-[120px]"
+                            <div className="border rounded-md">
+
+                                <Select
+                                    name={field.name}
+                                    value={field.value || "none"}
+                                    onValueChange={field.onChange}
+                                    required
                                 >
-                                    <SelectValue placeholder="Select" />
-                                </SelectTrigger>
-                                <SelectContent position="item-aligned">
-                                    <SelectItem value="none">Select</SelectItem>
-                                    <SelectSeparator />
-                                    {
-                                        ProductCategoryValues.map((value) => {
-                                            return <SelectItem value={value.toString()} key={value} >
-                                                {ProductCategory[value]}
-                                            </SelectItem>
-                                        })
-                                    }
-                                </SelectContent>
-                            </Select>
+                                    <SelectTrigger
+                                        id="product-category"
+                                        aria-invalid={fieldState.invalid}
+                                        className="min-w-[120px]"
+                                    >
+                                        <SelectValue placeholder="Select" />
+                                    </SelectTrigger>
+                                    <SelectContent position="item-aligned">
+                                        <SelectItem value="none">Select</SelectItem>
+                                        <SelectSeparator />
+                                        {
+                                            ProductCategoryValues.map((value) => {
+                                                return <SelectItem value={value.toString()} key={value} >
+                                                    {ProductCategory[value]}
+                                                </SelectItem>
+                                            })
+                                        }
+                                    </SelectContent>
+                                </Select>
+                            </div>
                         </Field>
                     )}
                 />
@@ -209,15 +213,17 @@ export default function ProductAddForm() {
                     name="price"
                     control={form.control}
                     render={({ field, fieldState }) => (
+
                         <Field data-invalid={fieldState.invalid}>
                             <FieldLabel htmlFor="product-price">
                                 Price
+                                <span className="text-destructive">*</span>
                             </FieldLabel>
-
                             <Input
                                 {...field}
                                 type="number"
                                 step="0.01"
+                                required
                             />
 
                             {fieldState.invalid && (
@@ -228,7 +234,7 @@ export default function ProductAddForm() {
                 />
 
                 {/* SKU */}
-                <Controller
+                < Controller
                     // Name = nome da propriedade no schmea
                     name="sku"
                     // passando controller do zod
@@ -239,12 +245,14 @@ export default function ProductAddForm() {
                         <Field data-invalid={fieldState.invalid} >
                             <FieldLabel htmlFor="product-sku">
                                 SKU
+                                <span className="text-destructive">*</span>
                             </FieldLabel>
                             <Input
                                 {...field}
                                 id="product-name"
                                 aria-invalid={fieldState.invalid}
                                 placeholder="Product's SKU"
+                                required
                             />
 
                             {/* Caso for invalido, renderizara o FieldError com o array de erros */}
@@ -263,6 +271,7 @@ export default function ProductAddForm() {
                         <Field data-invalid={fieldState.invalid}>
                             <FieldLabel htmlFor="product-price">
                                 Stock
+                                <span className="text-destructive">*</span>
                             </FieldLabel>
 
                             <Input
@@ -270,6 +279,7 @@ export default function ProductAddForm() {
                                 type="number"
                                 min={0}
                                 step={1}
+                                required
                             />
 
                             {fieldState.invalid && (
@@ -278,7 +288,10 @@ export default function ProductAddForm() {
                         </Field>
                     )}
                 />
+
+                <p className="text-muted-foreground text-xs">* Required field</p>
             </FieldGroup>
+
         </form>
     )
 }

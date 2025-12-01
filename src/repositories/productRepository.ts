@@ -42,7 +42,7 @@ export default class ProductRepository {
         }
     }
 
-    async addNewProduct(product:Product): Promise<ApiEnvolepe<Product>> {
+    async addNewProduct(product: Product): Promise<ApiEnvolepe<Product>> {
         try {
             const response = await fetch(BASE_URL, {
                 headers: {
@@ -55,6 +55,14 @@ export default class ProductRepository {
             console.log(response);
 
             const data = await response.json()
+
+            if (data.status === 400) {
+                return {
+                    data: data,
+                    success: false
+                }
+            }
+
 
             return {
                 data: data,

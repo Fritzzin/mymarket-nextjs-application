@@ -4,6 +4,8 @@ export type SuccessResponse<T> = {
     data: T,
     statusCode: number,
     message: string[],
+    errors?: string[],
+    status: number
   }
 }
 

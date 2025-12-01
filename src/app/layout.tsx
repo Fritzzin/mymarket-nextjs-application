@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
   title: "My Market",
@@ -27,6 +28,7 @@ export default function RootLayout({
           {children}
 
         </ThemeProvider>
+      <Toaster position="top-right"/>
       </body>
     </html>
   );
