@@ -68,7 +68,7 @@ export default function ProductAddForm() {
         defaultValues: {
             name: "",
             description: "",
-            ProductCategory: "none",
+            productCategory: undefined,
             sku: "",
             price: 0,
             stock: 0
@@ -237,13 +237,9 @@ export default function ProductAddForm() {
 
                 {/* SKU */}
                 < Controller
-                    // Name = nome da propriedade no schmea
                     name="sku"
-                    // passando controller do zod
                     control={form.control}
-                    // render do input utilizando um funcao
                     render={({ field, fieldState }) => (
-                        // passando o estado invalido (boolean) como parametro para o field
                         <Field data-invalid={fieldState.invalid} >
                             <FieldLabel htmlFor="product-sku">
                                 SKU
@@ -257,7 +253,6 @@ export default function ProductAddForm() {
                                 required
                             />
 
-                            {/* Caso for invalido, renderizara o FieldError com o array de erros */}
                             {fieldState.invalid && (
                                 <FieldError errors={[fieldState.error]} />
                             )}

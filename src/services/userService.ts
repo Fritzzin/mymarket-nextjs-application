@@ -1,5 +1,4 @@
 import IUserRepository from "@/interfaces/IUserRepository";
-import UserRepository from "@/repositories/userRepository";
 import { User } from "@/types/user";
 export default class UserService {
     // validacoes 
