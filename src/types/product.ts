@@ -1,7 +1,7 @@
 import { ProductCategory } from "@/enums/productCategory"
 
 export type Product = {
-    id: string,
+    id?: string,
     name: string,
     description: string,
     productCategory: ProductCategory,

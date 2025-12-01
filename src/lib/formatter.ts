@@ -7,5 +7,6 @@ export class Formatter {
     static formatCurrency(price: number): string {
         return Intl.NumberFormat('pt-br', { currency: "brl", style: "currency" }).format(price);
     }
+
 }
 

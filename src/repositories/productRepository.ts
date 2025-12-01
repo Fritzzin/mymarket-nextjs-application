@@ -41,4 +41,33 @@ export default class ProductRepository {
             }
         }
     }
+
+    async addNewProduct(product:Product): Promise<ApiEnvolepe<Product>> {
+        try {
+            const response = await fetch(BASE_URL, {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                method: "POST",
+                body: JSON.stringify(product)
+            });
+
+            console.log(response);
+
+            const data = await response.json()
+
+            return {
+                data: data,
+                success: true
+            }
+
+        } catch (error) {
+            console.error(error);
+            const message = String(error)
+            return {
+                data: message,
+                success: false
+            }
+        }
+    }
 }

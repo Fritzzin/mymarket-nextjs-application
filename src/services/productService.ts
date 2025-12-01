@@ -28,4 +28,27 @@ export default class ProductService {
         const products = res.data.data;
         return products;
     }
+
+    async addProduct(data: Product): Promise<boolean> {
+        console.log(data)
+
+        const product: Product = {
+            name: data.name,
+            description: data.description,
+            price: data.price,
+            productCategory: data.productCategory,
+            sku: data.sku,
+            stock: data.stock
+        }
+
+        const res = await this.repository.addNewProduct(product);
+
+        console.log(res);
+
+        if (!res.success) {
+            return false;
+        }
+
+        return true;
+    }
 }
