@@ -1,24 +1,15 @@
+import { IProductRepository } from "@/interfaces/IProductRepository";
 import ProductRepository from "@/repositories/productRepository";
 import { Product } from "@/types/product";
-export default class ProductService {
+export default class ProductService{
 
-    private repository = new ProductRepository();
-
-    async list(): Promise<Product[]> {
-        const products: Product[] = await this.repository.list();
-
-        if (!products || products.length === 0) {
-            return [];
-        }
-
-        // console.log(products);
-
-        return products;
+    private repository;
+    constructor(repository: IProductRepository) {
+        this.repository = repository;
     }
 
-
-    async listWithEnvolope(): Promise<Product[]> {
-        const res = await this.repository.listTest();
+    async list(): Promise<Product[]> {
+        const res = await this.repository.list();
 
         if (!res.success) {
             return [];
@@ -29,7 +20,7 @@ export default class ProductService {
         return products;
     }
 
-    async addProduct(data: Product): Promise<boolean> {
+    async addOne(data: Product): Promise<boolean> {
         console.log(data)
 
         const product: Product = {
@@ -41,7 +32,7 @@ export default class ProductService {
             stock: data.stock
         }
 
-        const res = await this.repository.addNewProduct(product);
+        const res = await this.repository.addOne(product);
 
         console.log('response', res);
 

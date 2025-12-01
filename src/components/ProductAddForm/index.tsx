@@ -12,6 +12,7 @@ import { Select, SelectContent, SelectItem, SelectSeparator } from "../ui/select
 import { SelectTrigger, SelectValue } from "@radix-ui/react-select"
 import ProductService from "@/services/productService"
 import { toast } from "sonner"
+import ProductRepository from "@/repositories/productRepository"
 
 // Schema do form utilizando Zod
 const formSchema = z.object({
@@ -75,11 +76,12 @@ export default function ProductAddForm() {
     })
 
     // Acao a ser realizada quando o evento submit disparar
-    const service = new ProductService();
+    const repository = new ProductRepository();
+    const service = new ProductService(repository);
     async function onSubmit(data: z.infer<typeof formSchema>) {
         console.log(data);
         // const response = await service.addProduct(data);
-        const promise = service.addProduct(data)
+        const promise = service.addOne(data)
 
         toast.promise(promise, {
             loading: "Sending product's information...",

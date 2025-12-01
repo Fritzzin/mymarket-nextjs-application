@@ -1,23 +1,32 @@
+import IUserRepository from "@/interfaces/IUserRepository";
+import { BASE_URL } from "@/lib/constants";
+import { ApiEnvelope } from "@/types/apiEnvelope";
 import { User } from "@/types/user";
 
-const BASE_URL = "http://localhost:5109/api/users";
-
-export default class UserRepository {
-
-    async list(): Promise<User[]> {
+export default class UserRepository implements IUserRepository {
+    async list(): Promise<ApiEnvelope<User[]>> {
         try {
-            const response = await fetch(BASE_URL);
+            const response = await fetch(`${BASE_URL}/users`);
 
-            if (!response.ok) {
-                return [];
+            const data = await response.json()
+
+            return {
+                data: data,
+                success: true
             }
 
-            const dataInJson = await response.json();
-            return dataInJson.data;
-
         } catch (error) {
-            console.error(error)
-            throw (error)
+            console.error(error);
+            const message = String(error)
+            return {
+                data: message,
+                success: false
+            }
         }
     }
+
+    addOne(user: User): Promise<ApiEnvelope<boolean>> {
+        throw new Error("Method not implemented.");
+    }
+
 }

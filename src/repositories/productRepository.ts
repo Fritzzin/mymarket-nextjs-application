@@ -1,30 +1,14 @@
-import { ApiEnvolepe } from "@/types/apiEnvelope";
+import { IProductRepository } from "@/interfaces/IProductRepository";
+import { BASE_URL } from "@/lib/constants";
+import { ApiEnvelope } from "@/types/apiEnvelope";
 import { Product } from "@/types/product";
 
-const BASE_URL = "http://localhost:5109/api/products";
 
-export default class ProductRepository {
+export default class ProductRepository implements IProductRepository {
 
-    async list(): Promise<Product[]> {
+    async list(): Promise<ApiEnvelope<Product[]>> {
         try {
-            const response = await fetch(BASE_URL);
-
-            if (!response.ok) {
-                return [];
-            }
-
-            const dataInJson = await response.json();
-            return dataInJson.data;
-
-        } catch (error) {
-            console.error(error)
-            throw (error)
-        }
-    }
-
-    async listTest(): Promise<ApiEnvolepe<Product[]>> {
-        try {
-            const response = await fetch(BASE_URL);
+            const response = await fetch(`${BASE_URL}/products`);
             const data = await response.json()
 
             return {
@@ -42,9 +26,9 @@ export default class ProductRepository {
         }
     }
 
-    async addNewProduct(product: Product): Promise<ApiEnvolepe<Product>> {
+    async addOne(product: Product): Promise<ApiEnvelope<boolean>> {
         try {
-            const response = await fetch(BASE_URL, {
+            const response = await fetch(`${BASE_URL}/products`, {
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -62,7 +46,6 @@ export default class ProductRepository {
                     success: false
                 }
             }
-
 
             return {
                 data: data,

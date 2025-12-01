@@ -3,9 +3,11 @@ import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { DataTable } from "@/components/GenericTable";
 import { columns } from "./columns";
 import UserService from "@/services/userService";
+import UserRepository from "@/repositories/userRepository";
 
 export default async function Users() {
-    const service = new UserService();
+    const repository = new UserRepository();
+    const service = new UserService(repository);
     const users = await service.list();
 
     return (

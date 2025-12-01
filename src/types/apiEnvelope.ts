@@ -14,4 +14,4 @@ export type ErrorResponse = {
   data: string
 }
 
-export type ApiEnvolepe<T> = SuccessResponse<T> | ErrorResponse
+export type ApiEnvelope<T> = SuccessResponse<T> | ErrorResponse

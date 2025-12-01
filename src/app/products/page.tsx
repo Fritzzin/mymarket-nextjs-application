@@ -6,6 +6,7 @@ import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { columns } from "./columns";
 import { Product } from "@/types/product";
 import ProductService from "@/services/productService";
+import ProductRepository from "@/repositories/productRepository";
 // import ProductRepository from "@/repositories/productRepository";
 // import { useEffect, useState } from "react";
 
@@ -13,9 +14,9 @@ import ProductService from "@/services/productService";
 
 export default async function Products() {
 
-    const service = new ProductService();
-    const products: Product[] = await service.listWithEnvolope();
-    // const products: Product[] = await service.list();
+    const repository = new ProductRepository();
+    const service = new ProductService(repository);
+    const products: Product[] = await service.list();
 
     return (
         <SidebarProvider>
