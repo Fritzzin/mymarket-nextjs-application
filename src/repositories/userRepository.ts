@@ -1,12 +1,11 @@
 import IUserRepository from "@/interfaces/IUserRepository";
-import { BASE_URL } from "@/lib/constants";
 import { ApiEnvelope } from "@/types/apiEnvelope";
 import { User } from "@/types/user";
 
 export default class UserRepository implements IUserRepository {
     async list(): Promise<ApiEnvelope<User[]>> {
         try {
-            const response = await fetch(`${BASE_URL}/users`);
+            const response = await fetch(`${process.env.API_URL}/users`);
 
             const data = await response.json()
 

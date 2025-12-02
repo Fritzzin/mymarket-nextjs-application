@@ -13,7 +13,6 @@ export default class ProductService {
         if (!res) {
             return false;
         }
-
         return true;
     }
 

@@ -1,13 +1,13 @@
 import { IProductRepository } from "@/interfaces/IProductRepository";
-import { BASE_URL } from "@/lib/constants";
 import { ApiEnvelope } from "@/types/apiEnvelope";
 import { Product } from "@/types/product";
+
 
 
 export default class ProductRepository implements IProductRepository {
     async deleteOne(id: string): Promise<boolean> {
         try {
-            const response = await fetch(`${BASE_URL}/products/${id}/delete`, { method: "delete" });
+            const response = await fetch(`${process.env.API_URL}/products/${id}/delete`, { method: "delete" });
             if (response.status !== 204) {
                 return false;
             }
@@ -20,7 +20,7 @@ export default class ProductRepository implements IProductRepository {
 
     async list(): Promise<ApiEnvelope<Product[]>> {
         try {
-            const response = await fetch(`${BASE_URL}/products`);
+            const response = await fetch(`${process.env.API_URL}/products`);
             const data = await response.json()
 
             return {
@@ -40,7 +40,7 @@ export default class ProductRepository implements IProductRepository {
 
     async addOne(product: Product): Promise<ApiEnvelope<boolean>> {
         try {
-            const response = await fetch(`${BASE_URL}/products`, {
+            const response = await fetch(`${process.env.API_URL}/products`, {
                 headers: {
                     'Content-Type': 'application/json',
                 },

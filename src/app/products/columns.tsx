@@ -18,6 +18,8 @@ import ProductRepository from "@/repositories/productRepository";
 import ProductService from "@/services/productService";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { deleteProduct } from "@/actions/productActions";
+
 const repository = new ProductRepository();
 const service = new ProductService(repository);
 
@@ -26,8 +28,9 @@ function Actions({ row }: { row: Row<Product> }) {
     const router = useRouter();
     const product = row.original;
 
-    const deleteProduct = async () => {
-        const isDeleted = service.deleteOne(product.id || "");
+    const handleDelete = async () => {
+        // const isDeleted = service.deleteOne(product.id || "");
+        const isDeleted = deleteProduct(product.id || "d");
         toast.promise(isDeleted, {
             loading: "Sending product's information...",
             success: (response) => {
@@ -66,7 +69,7 @@ function Actions({ row }: { row: Row<Product> }) {
                     <Edit />  Edit
                 </DropdownMenuItem>
 
-                <DropdownMenuItem variant="destructive" className="bg-red" onClick={deleteProduct}>
+                <DropdownMenuItem variant="destructive" className="bg-red" onClick={handleDelete}>
                     <Trash /> Delete
                 </DropdownMenuItem >
             </DropdownMenuContent>
