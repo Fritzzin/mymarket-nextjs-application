@@ -1,4 +1,3 @@
-// "use client"
 
 import AppSidebar from "@/components/AppSidebar";
 import { DataTable } from "@/components/GenericTable";
@@ -7,9 +6,6 @@ import { columns } from "./columns";
 import { Product } from "@/types/product";
 import ProductService from "@/services/productService";
 import ProductRepository from "@/repositories/productRepository";
-// import ProductRepository from "@/repositories/productRepository";
-// import { useEffect, useState } from "react";
-
 
 
 export default async function Products() {

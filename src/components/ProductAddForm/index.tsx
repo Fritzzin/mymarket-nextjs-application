@@ -13,6 +13,7 @@ import { SelectTrigger, SelectValue } from "@radix-ui/react-select"
 import ProductService from "@/services/productService"
 import { toast } from "sonner"
 import ProductRepository from "@/repositories/productRepository"
+import { Product } from "@/types/product"
 
 // Schema do form utilizando Zod
 const formSchema = z.object({
@@ -59,19 +60,22 @@ const formSchema = z.object({
     )
 })
 
+interface ProductFormProps {
+    product?: Product
+}
 
-export default function ProductAddForm() {
+export default function ProductAddForm({ product }: ProductFormProps) {
     // useForm do react-hook-form, cria uma instancia do form utilizando como resolver o zod
     type FormData = z.infer<typeof formSchema>
     const form = useForm<FormData>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            name: "",
-            description: "",
-            productCategory: undefined,
-            sku: "",
-            price: 0,
-            stock: 0
+            name: product?.name || "",
+            description: product?.description || "",
+            productCategory: product?.productCategory || undefined,
+            sku: product?.sku || "",
+            price: product?.price || 0,
+            stock: product?.stock || 0
         },
     })
 
@@ -80,9 +84,17 @@ export default function ProductAddForm() {
     const service = new ProductService(repository);
     async function onSubmit(data: z.infer<typeof formSchema>) {
         console.log(data);
-        // const response = await service.addProduct(data);
-        const promise = service.addOne(data)
 
+        // ----- Realizar EDIT ou INSERT -----
+        // let promise;
+        // if (product) {
+        //     // promise = service.edit(id, data)
+        //     // colocar edit
+        // } else {
+        //     promise = service.addOne(data)
+        // }
+
+        const promise = service.addOne(data);
         toast.promise(promise, {
             loading: "Sending product's information...",
             success: (response) => {

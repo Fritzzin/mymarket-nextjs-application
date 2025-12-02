@@ -5,6 +5,18 @@ import { Product } from "@/types/product";
 
 
 export default class ProductRepository implements IProductRepository {
+    async deleteOne(id: string): Promise<boolean> {
+        try {
+            const response = await fetch(`${BASE_URL}/products/${id}/delete`, { method: "delete" });
+            if (response.status !== 204) {
+                return false;
+            }
+            return true;
+        } catch (error) {
+            console.error(error);
+            return false;
+        }
+    }
 
     async list(): Promise<ApiEnvelope<Product[]>> {
         try {
@@ -36,16 +48,7 @@ export default class ProductRepository implements IProductRepository {
                 body: JSON.stringify(product)
             });
 
-            console.log(response);
-
             const data = await response.json()
-
-            if (data.status === 400) {
-                return {
-                    data: data,
-                    success: false
-                }
-            }
 
             return {
                 data: data,

@@ -1,11 +1,20 @@
 import { IProductRepository } from "@/interfaces/IProductRepository";
-import ProductRepository from "@/repositories/productRepository";
 import { Product } from "@/types/product";
-export default class ProductService{
+export default class ProductService {
 
     private repository;
     constructor(repository: IProductRepository) {
         this.repository = repository;
+    }
+
+    async deleteOne(id: string): Promise<boolean> {
+        const res = await this.repository.deleteOne(id);
+
+        if (!res) {
+            return false;
+        }
+
+        return true;
     }
 
     async list(): Promise<Product[]> {
@@ -17,6 +26,7 @@ export default class ProductService{
         }
 
         const products = res.data.data;
+        // console.log(products);
         return products;
     }
 
@@ -40,7 +50,6 @@ export default class ProductService{
             console.log('ERROR')
             return false;
         }
-
         return true;
     }
 }
